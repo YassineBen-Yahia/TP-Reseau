@@ -165,7 +165,7 @@ ping -c 3 -s 40 10.0.12.2
 
 | Point de Capture | Emplacement       | Observations Attendues                                    |
 |------------------|-------------------|----------------------------------------------------------|
-| **Capture 1**    | Lien Linux → R1   | Paquets originaux, fragmentation source IPv6             |
-| **Capture 2**    | Lien R1 → R2      | Messages ICMPv6 "Packet Too Big", découverte MTU         |
+| **Capture 1**    | Lien Linux → R1   | Paquets originaux, fragmentation ipv4            |
+| **Capture 2**    | Lien R1 → R2      |Ddécouverte MTU         |
 | **Capture 3**    | Lien R2 → Dest    | Fragments IPv4 créés par R2, fragments IPv6 de la source |
 
