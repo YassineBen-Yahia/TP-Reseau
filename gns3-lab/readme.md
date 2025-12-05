@@ -1,6 +1,6 @@
-# 🔬 Laboratoire GNS3 : Fragmentation IPv4 vs IPv6
+# Laboratoire GNS3 : Fragmentation IPv4 vs IPv6
 
-## 🎯 Objectif du Laboratoire
+## Objectif du Laboratoire
 
 Ce laboratoire démontre de manière pratique les **différences fondamentales** entre les mécanismes de fragmentation IPv4 et IPv6 à travers une topologie réseau contrôlée dans GNS3. Il permet d'observer en temps réel :
 
@@ -12,14 +12,14 @@ Ce laboratoire démontre de manière pratique les **différences fondamentales**
 
 ---
 
-## 📋 Prérequis
+## Prérequis
 
 ### Logiciels Requis
-- ✅ **GNS3** installé et configuré (version 2.2+)
-- ✅ **Images Cisco IOS** c3745 ou équivalent
-- ✅ **2 machines virtuelles Linux** (Ubuntu 20.04+ / Fedora 34+ recommandés)
-- ✅ **Wireshark** pour l'analyse des captures PCAP
-- ✅ **Python 3.8+** avec Scapy (pour les scripts d'analyse)
+- **GNS3** installé et configuré (version 2.2+)
+- **Images Cisco IOS** c3745 ou équivalent
+- **2 machines virtuelles Linux** (Ubuntu 20.04+ / Fedora 34+ recommandés)
+- **Wireshark** pour l'analyse des captures PCAP
+- **Python 3.8+** avec Scapy (pour les scripts d'analyse)
 
 
 
@@ -30,7 +30,7 @@ Ce laboratoire démontre de manière pratique les **différences fondamentales**
 
 ---
 
-## 🔧 Configuration MTU Spécifique
+##  Configuration MTU Spécifique
 
 ### Tableau des Valeurs MTU Configurées
 
@@ -39,7 +39,7 @@ Ce laboratoire démontre de manière pratique les **différences fondamentales**
 | Linux VM    | enp0s3           | 1500 (défaut)    | Source des paquets            |
 | R1          | FastEthernet0/0  | 1500 (défaut)    | Lien vers source              |
 | R1          | FastEthernet1/0  | 1500 (défaut)    | Lien sortant vers R2          |
-| R2          | FastEthernet0/0  | **1300** ⚠️      | **Goulot d'étranglement**     |
+| R2          | FastEthernet0/0  | **1300**       | **Goulot d'étranglement**     |
 | R2          | FastEthernet0/1  | 1500 (défaut)    | Lien vers destination         |
 
 ### Commandes de Configuration MTU
@@ -61,7 +61,7 @@ R2# show interfaces | include MTU
 
 ---
 
-## 🧪 Méthodologie de Test
+##  Méthodologie de Test
 
 ### Test 1 : Vérification de Connectivité de Base
 
@@ -72,19 +72,19 @@ R2# show interfaces | include MTU
 
 # Test IPv4 - Connectivité vers R1
 ping -c 4 10.0.0.1
-# ✅ Attendu : 4 paquets reçus, 0% perte
+#  Attendu : 4 paquets reçus, 0% perte
 
 # Test IPv6 - Connectivité vers R1
 ping6 -c 4 2001:db8:1::1
-# ✅ Attendu : 4 paquets reçus, 0% perte
+#  Attendu : 4 paquets reçus, 0% perte
 
 # Test IPv4 - Connectivité vers R2 (à travers R1)
 ping -c 4 10.0.12.2
-# ✅ Attendu : 4 paquets reçus, 0% perte
+#  Attendu : 4 paquets reçus, 0% perte
 
 # Test IPv6 - Connectivité vers R2 (à travers R1)
 ping6 -c 4 2001:db8:12::2
-# ✅ Attendu : 4 paquets reçus, 0% perte
+#  Attendu : 4 paquets reçus, 0% perte
 ```
 
 ### Test 2 : Fragmentation IPv4 (Routeur Intermédiaire)
@@ -98,12 +98,12 @@ ping6 -c 4 2001:db8:12::2
 # Sans le flag DF, R2 peut fragmenter
 ping -c 3 -s 1400 192.168.1.2
 
-# 📊 Résultat attendu :
+#  Résultat attendu :
 # - Linux envoie 1 paquet de 1400 bytes
 # - R1 transmet sans modification (MTU=1500)
 # - R2 fragmente en 2 paquets (MTU=1300)
 # - Destination reçoit et réassemble
-# ✅ Succès : 3 paquets reçus
+#  Succès : 3 paquets reçus
 ```
 
 
@@ -118,11 +118,11 @@ ping -c 3 -s 1400 192.168.1.2
 # Linux fragmente AVANT d'envoyer
 ping6 -c 3 -s 2000 2001:db8:1::1
 
-# 📊 Résultat attendu :
+#  Résultat attendu :
 # - Linux détecte 2000 > 1500 (MTU local)
 # - Linux fragmente en 2 fragments + en-tête extension
 # - R1 reçoit 2 fragments et transmet
-# ✅ Succès : 3 paquets reçus
+#  Succès : 3 paquets reçus
 ```
 
 #### Test 3.2 : Path MTU Discovery Automatique
@@ -146,20 +146,20 @@ ping6 -c 5 -s 1400 2001:db8:12::2 -v
 # Test avec le MTU minimum IPv6
 # 1232 = 1280 - 40 (IPv6 header) - 8 (ICMPv6 header)
 ping6 -c 3 -s 1232 2001:db8:12::2
-# ✅ Doit fonctionner sans problème
+#  Doit fonctionner sans problème
 
 # Test avec une valeur légèrement supérieure
 ping6 -c 3 -s 1240 2001:db8:12::2
-# ⚠️ Peut nécessiter fragmentation selon le PMTU découvert
+#  Peut nécessiter fragmentation selon le PMTU découvert
 
 # Comparaison IPv4 - MTU minimum 68 bytes
 ping -c 3 -s 40 10.0.12.2
-# ✅ Fonctionne (bien en dessous du minimum)
+#  Fonctionne (bien en dessous du minimum)
 ```
 
 ---
 
-## 📊 Capture et Analyse avec Wireshark
+##  Capture et Analyse avec Wireshark
 
 ### Points de Capture Stratégiques
 
