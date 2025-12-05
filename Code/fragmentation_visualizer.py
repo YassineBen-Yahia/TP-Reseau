@@ -1,8 +1,4 @@
-#!/usr/bin/env python3
-"""
-Fragmentation Visualizer
-Creates visual comparisons and charts for IPv4/IPv6 fragmentation analysis
-"""
+
 
 from scapy.all import *
 import json

@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-"""
-Complete IPv4/IPv6 Fragmentation Demo - No Root Required
-This version creates and analyzes fragments without actually sending them
-"""
 
 from scapy.all import *
 import sys

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Analyseur de captures PCAP pour démontrer la fragmentation IPv4 vs IPv6
-Analyse les fichiers .pcap capturés depuis GNS3
+Analyse les fichiers .pcapng capturés depuis GNS3
 """
 
 from scapy.all import *
