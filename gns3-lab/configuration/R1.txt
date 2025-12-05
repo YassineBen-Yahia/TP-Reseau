@@ -1,0 +1,19 @@
+! Configuration de base
+hostname R1
+ipv6 unicast-routing
+
+! Interface vers Linux VM
+interface FastEthernet0/0
+ ip address 192.168.1.1 255.255.255.0
+ ipv6 address 2001:DB8:1::1/64
+ no shutdown
+
+! Interface vers R2
+interface FastEthernet1/0
+ ip address 192.168.12.1 255.255.255.0
+ ipv6 address 2001:DB8:12::1/64
+ no shutdown
+
+! Routage statique
+ip route 192.168.2.0 255.255.255.0 192.168.12.2
+ipv6 route 2001:DB8:2::/64 2001:DB8:12::2

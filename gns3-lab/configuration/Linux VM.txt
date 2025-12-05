@@ -1,0 +1,13 @@
+# Configuration IPv4
+sudo ip addr add 192.168.1.10/24 dev enp0s3
+sudo ip route add default via 192.168.1.1
+
+# Configuration IPv6
+sudo ip -6 addr add 2001:db8:1::10/64 dev enp0s3
+sudo ip -6 route add default via 2001:db8:1::1
+
+# Routes vers le réseau de R2
+sudo ip route add 192.168.12.0/24 via 192.168.1.1
+sudo ip route add 192.168.2.0/24 via 192.168.1.1
+sudo ip -6 route add 2001:db8:12::/64 via 2001:db8:1::1
+sudo ip -6 route add 2001:db8:2::/64 via 2001:db8:1::1

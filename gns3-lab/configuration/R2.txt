@@ -1,0 +1,19 @@
+hostname R2
+ipv6 unicast-routing
+
+! Interface vers R1 (avec MTU réduit)
+interface FastEthernet0/0
+ ip address 192.168.12.2 255.255.255.0
+ ipv6 address 2001:DB8:12::2/64
+ ipv6 mtu 1300                    ! Point clé pour la démonstration
+ no shutdown
+
+! Interface vers fedora-1
+interface FastEthernet0/1
+ ip address 192.168.2.1 255.255.255.0
+ ipv6 address 2001:DB8:2::1/64
+ no shutdown
+
+! Routage
+ip route 192.168.1.0 255.255.255.0 192.168.12.1
+ipv6 route 2001:DB8:1::/64 2001:DB8:12::1
